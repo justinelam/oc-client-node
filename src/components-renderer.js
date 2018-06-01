@@ -39,22 +39,23 @@ module.exports = function(config, renderTemplate, templatesModules) {
       renderComponents(toDo, options, () => {
         processClientReponses(toDo, options, () => {
           const errors = [],
-            results = [];
+            results = [],
+            headers = [];
           let hasErrors = false;
 
           _.each(toDo, action => {
             if (action.result.error) {
               hasErrors = true;
             }
-
             errors.push(action.result.error || null);
             results.push(action.result.html);
+            headers.push(action.result.headers);
           });
 
           if (hasErrors) {
-            callback(errors, results);
+            callback(errors, results, headers);
           } else {
-            callback(null, results);
+            callback(null, results, headers);
           }
         });
       });
